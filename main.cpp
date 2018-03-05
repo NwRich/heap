@@ -13,11 +13,11 @@ int main() {
   return 0;
 }
 
-void add(node* toAdd, node* heap[]) {
+void add(int toAdd, node* heap[]) {
   int place = -1;
   for (int i = 0; i < 100; i++) {//go through the array to insert into an empty spt
     if (heap[i]->getValue() == 0) {//if the value the spot is empty
-      heap[i] = toAdd;//add the node to the array
+      heap[i]->setValue(toAdd);//add the node to the array
       place = i;//keep track of where I placed the array
       break;//end the for loop
     }
