@@ -2,7 +2,9 @@
 
 node::node() {
   value = NULL;
-  next = NULL;
+  right = NULL;
+  left = NULL;
+  prev = NULL;
 }
 
 void node::setValue(int newInt) {
