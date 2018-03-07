@@ -1,15 +1,33 @@
+ /*Nicholas Rich
+ *3/5/18
+ *a program that creates a max heap from a user input or from a file and then prints it out
+ */
 #include <iostream>
+#include <ctype.h>
+#include <cstring>
+#include <stdlib.h>
 #include "node.h"
 using namespace std;
-void heapify(int place, node heap[]);
+void heapify(int place, node* heap[]);
 void add(int toAdd, node* heap[]);
 int main() {
   node* heap[100];
-  int input;
-  node* nodeToAdd = new node();
-  cin >> input;
-  add(input, heap);
-  
+  for(int i = 0; i < 100; i++) {//used to fill the array with emtpy nodes
+    node* newNode = new node();//empty node
+    heap[i] = newNode;//empty node
+  }
+  char* input = new char[32];//used to get the input from the user
+  cout << "type in numbers, when you are done type in 'end'" << endl;//give the user instructions
+  for (int i = 0; i < 100; i++) {//go through the length of the array
+    cin >> input;//write to input
+    if (strcmp(input, "end") != 0) {//if the input is not "end"
+      int in = atoi(input);//convert to the char array to an int
+      add(in, heap);//pass in head
+    }
+    else {//otherwise the input is not a number
+      break;//end the for loop
+    }
+  }
   return 0;
 }
 
@@ -35,19 +53,20 @@ void add(int toAdd, node* heap[]) {
 	break;//end
       }
       place = parentPlace;//now at the parents place
+      heapify(place, heap);
     }
   }
 }
 
 void heapify(int place, node* heap[]) {//compare the the parent and the child and switch of the child is greater
   int temp = heap[place-1]->getValue();//create a temp value for the place of heap
-  if (temp < heap[place*2-1]->getValue() || temp < heap[place*2]->getValue()) {
-    if (heap[place*2-1]->getValue() < heap[place*2]->getValue()) {
+  if (temp < heap[place*2-1]->getValue() || temp < heap[place*2]->getValue()) {//check the left and the right child
+    if (heap[place*2-1]->getValue() < heap[place*2]->getValue()) {//if the left child is greater than the right child
       heap[place-1]->setValue(heap[place*2]->getValue());
       heap[place*2]->setValue(temp);
       heapify(place*2+1,heap);
     }
-    else {
+    else {//the right child is greater
       heap[place-1]->setValue(heap[place*2-1]->getValue());
       heap[place*2-1]->setValue(temp);
       heapify(place*2,heap);

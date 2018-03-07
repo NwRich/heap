@@ -1,7 +1,7 @@
 #include "node.h"
 
 node::node() {
-  value = NULL;
+  value = 0;
   right = NULL;
   left = NULL;
   prev = NULL;
