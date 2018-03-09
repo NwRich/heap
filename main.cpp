@@ -104,5 +104,6 @@ void makeTree(node* heap[]) {
   print(head, 0);
 }
 
-void print(node* current, int indent) {
+void print(node* current, int depth) {
+  
 }
