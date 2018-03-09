@@ -8,10 +8,13 @@
 #include <stdlib.h>
 #include "node.h"
 using namespace std;
+node* heap[100];
+node* head;
 void heapify(int place, node* heap[]);
 void add(int toAdd, node* heap[]);
+void makeTree(node* heap[]);
 int main() {
-  node* heap[100];
+  //node* heap[100];
   for(int i = 0; i < 100; i++) {//used to fill the array with emtpy nodes
     node* newNode = new node();//empty node
     heap[i] = newNode;//empty node
@@ -28,6 +31,7 @@ int main() {
       break;//end the for loop
     }
   }
+  makeTree(heap);//make the heap array into a max heap tree using nodes
   return 0;
 }
 
@@ -66,10 +70,35 @@ void heapify(int place, node* heap[]) {//compare the the parent and the child an
       heap[place*2]->setValue(temp);
       heapify(place*2+1,heap);
     }
-    else {//the right child is greater
+    else {//the right child is greater than or equal to its sibling
       heap[place-1]->setValue(heap[place*2-1]->getValue());
       heap[place*2-1]->setValue(temp);
       heapify(place*2,heap);
     }
   }
+}
+
+void makeTree(node* heap[]) {
+  int parent = -1;
+  if (head == NULL) {//if the head is empty
+    head = heap[0];//set the head to the first spot in the array
+    head->setLeft(heap[1]);//set its left child
+    head->setRight(heap[2]);//set its right child
+  }
+  for (int i = 1; i < 100; i++) {//go through the array ignoring the head
+    if (heap[i] != NULL) {//if the spot is not empty
+      parent = i+1;//parents spot is equal to 1 greater than its spot
+      int childPlace = parent*2;//the childs place is 2 times greater
+      if (heap[childPlace-1]->getValue() != 0) {
+	heap[parent]->setLeft(heap[childPlace-1]);//set the left value
+      }
+      if (heap[childPlace]->getValue() != 0) {
+	heap[parent]->setRight(heap[childPlace]);//set the right value
+      }
+      else {
+	break;
+      }
+    }
+  }
+  //print(head);
 }
