@@ -13,6 +13,7 @@ node* head;
 void heapify(int place, node* heap[]);
 void add(int toAdd, node* heap[]);
 void makeTree(node* heap[]);
+void print(node* current, int indent);
 int main() {
   //node* heap[100];
   for(int i = 0; i < 100; i++) {//used to fill the array with emtpy nodes
@@ -100,5 +101,8 @@ void makeTree(node* heap[]) {
       }
     }
   }
-  //print(head);
+  print(head, 0);
+}
+
+void print(node* current, int indent) {
 }
