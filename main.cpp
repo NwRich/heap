@@ -13,7 +13,7 @@ node* head;
 void heapify(int place, node* heap[]);
 void add(int toAdd, node* heap[]);
 void makeTree(node* heap[]);
-void print(node* current, int indent);
+void print(node* current, int depth);
 int main() {
   //node* heap[100];
   for(int i = 0; i < 100; i++) {//used to fill the array with emtpy nodes
@@ -87,14 +87,14 @@ void makeTree(node* heap[]) {
     head->setRight(heap[2]);//set its right child
   }
   for (int i = 1; i < 100; i++) {//go through the array ignoring the head
-    if (heap[i] != NULL) {//if the spot is not empty
+    if (heap[i]->getValue() != 0) {//if the spot is not empty
       parent = i+1;//parents spot is equal to 1 greater than its spot
       int childPlace = parent*2;//the childs place is 2 times greater
       if (heap[childPlace-1]->getValue() != 0) {
-	heap[parent]->setLeft(heap[childPlace-1]);//set the left value
+	heap[parent-1]->setLeft(heap[childPlace-1]);//set the left value
       }
       if (heap[childPlace]->getValue() != 0) {
-	heap[parent]->setRight(heap[childPlace]);//set the right value
+	heap[parent-1]->setRight(heap[childPlace]);//set the right value
       }
       else {
 	break;
@@ -105,5 +105,15 @@ void makeTree(node* heap[]) {
 }
 
 void print(node* current, int depth) {
-  
+  if (current->getLeft() != NULL) {
+    print(current->getLeft(), depth+1);//go to the end of the tree left bound
+  }
+  int tab = depth;
+  for (tab; tab > 0; tab--) {
+    cout << "\t";
+  }
+  cout << current->getValue() << endl;
+  if (current->getRight() != NULL) {
+    print(current->getRight(), depth+1);
+  }
 }
