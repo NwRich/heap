@@ -151,7 +151,7 @@ void printFromTree(node* heap) {
     int place = -1;
     cout << heap[0] << " ";
     for (int i = 0; i < 100; i++) {
-      if (heap[i] ==0) {
+      if (heap[i]->getValue() == 0) {
 	place = i;
 	break;
       }
@@ -159,8 +159,8 @@ void printFromTree(node* heap) {
     if (place == -1) {
       place = 100;
     }
-    heap[0] = heap[place-1];
-    heap[place-1] = 0;
+    heap[0]->setValue(heap[place-1]->getValue());
+    heap[place-1]->setValue(0);
     heapify(heap);
   }
 }
