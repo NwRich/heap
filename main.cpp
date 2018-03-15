@@ -15,6 +15,7 @@ void heapify(int place, node* heap[]);
 void add(int toAdd, node* heap[]);
 void makeTree(node* heap[]);
 void print(node* current, int depth);
+void printFromTree(node* heap[]);
 
 int main() {
   for(int i = 0; i < 100; i++) {//used to fill the array with emtpy nodes
@@ -22,23 +23,24 @@ int main() {
     heap[i] = newNode;//empty node
   }
   char* input = new char[32];//used to get the input from the user
-  cout << "input number or type in file to input from a file" << endl;
-  cin >> input;
-  cin.get();
+  cout << "input number or type in file to input from a file" << endl;//promt the user for input
+  cin >> input;//write into the input
+  cin.get();//clear the buffer
   if (strcmp(input, "file") == 0) {//if the input is 'file'
-    ifstream inFile;
-    cout << "what is the name of the file" << endl;
+    ifstream inFile;//create a file
+    cout << "what is the name of the file" << endl;//promt the user for an input
     cin >> input;//write the name of the file to input
     inFile.open(input);//open the file
-    char inputFile[500];
-    inFile.getline(inputFile, 500);
-    inFile.close();
-    char* c = strtok(inputFile, " ");
-    while (c != NULL) {
-      add(atoi(c), heap);
+    char inputFile[500];//create a char array to hold the value from the file
+    inFile.getline(inputFile, 500);//write to inputFile
+    inFile.close();//close the file
+    char* c = strtok(inputFile, " ");//get a token breaking at a space
+    while (c != NULL) {//while c is equal to something
+      add(atoi(c), heap);//convert c to an int and add
       c = strtok(NULL, " ");
     }
     makeTree(heap);
+    printFromTree(heap);
     if (!inFile) {//if the file doesnt exist
       cout << "unable to find file" << endl;//tell the user
       return 0;//end the program
@@ -57,6 +59,7 @@ int main() {
       }
     }
     makeTree(heap);//make the heap array into a max heap tree using nodes
+    printFromTree(heap);
   }
   return 0;
 }
@@ -140,5 +143,24 @@ void print(node* current, int depth) {
   cout << current->getValue() << endl;//print out the value
   if (current->getLeft() != NULL) {//if the left is not empty
     print(current->getLeft(), depth+1);//call the print passing in the left
+  }
+}
+
+void printFromTree(node* heap) {
+  while (heap[0]->getValue() != 0) {
+    int place = -1;
+    cout << heap[0] << " ";
+    for (int i = 0; i < 100; i++) {
+      if (heap[i] ==0) {
+	place = i;
+	break;
+      }
+    }
+    if (place == -1) {
+      place = 100;
+    }
+    heap[0] = heap[place-1];
+    heap[place-1] = 0;
+    heapify(heap);
   }
 }
