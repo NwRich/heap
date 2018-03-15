@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <cstring>
 #include <stdlib.h>
+#include <fstream>
 #include "node.h"
 using namespace std;
 node* heap[100];
@@ -14,25 +15,49 @@ void heapify(int place, node* heap[]);
 void add(int toAdd, node* heap[]);
 void makeTree(node* heap[]);
 void print(node* current, int depth);
+
 int main() {
-  //node* heap[100];
   for(int i = 0; i < 100; i++) {//used to fill the array with emtpy nodes
     node* newNode = new node();//empty node
     heap[i] = newNode;//empty node
   }
   char* input = new char[32];//used to get the input from the user
-  cout << "type in numbers, when you are done type in 'end'" << endl;//give the user instructions
-  for (int i = 0; i < 100; i++) {//go through the length of the array
-    cin >> input;//write to input
-    if (strcmp(input, "end") != 0) {//if the input is not "end"
-      int in = atoi(input);//convert to the char array to an int
-      add(in, heap);//pass in head
+  cout << "input number or type in file to input from a file" << endl;
+  cin >> input;
+  cin.get();
+  if (strcmp(input, "file") == 0) {//if the input is 'file'
+    ifstream inFile;
+    cout << "what is the name of the file" << endl;
+    cin >> input;//write the name of the file to input
+    inFile.open(input);//open the file
+    char inputFile[500];
+    inFile.getline(inputFile, 500);
+    inFile.close();
+    char* c = strtok(inputFile, " ");
+    while (c != NULL) {
+      add(atoi(c), heap);
+      c = strtok(NULL, " ");
     }
-    else {//otherwise the input is not a number
-      break;//end the for loop
+    makeTree(heap);
+    if (!inFile) {//if the file doesnt exist
+      cout << "unable to find file" << endl;//tell the user
+      return 0;//end the program
     }
   }
-  makeTree(heap);//make the heap array into a max heap tree using nodes
+  else {
+    cout << "type in numbers, when you are done type in 'end'" << endl;//give the user instructions
+    for (int i = 0; i < 100; i++) {//go through the length of the array
+      cin >> input;//write to input
+      if (strcmp(input, "end") != 0) {//if the input is not "end"
+	int in = atoi(input);//convert to the char array to an int
+	add(in, heap);//pass in head
+      }
+      else {//otherwise the input is not a number
+	break;//end the for loop
+      }
+    }
+    makeTree(heap);//make the heap array into a max heap tree using nodes
+  }
   return 0;
 }
 
@@ -97,23 +122,23 @@ void makeTree(node* heap[]) {
 	heap[parent-1]->setRight(heap[childPlace]);//set the right value
       }
       else {
-	break;
+	break;//otherwise end the for loop
       }
     }
   }
-  print(head, 0);
+  print(head, 0);//print
 }
 
 void print(node* current, int depth) {
-  if (current->getLeft() != NULL) {
-    print(current->getLeft(), depth+1);//go to the end of the tree left bound
+  if (current->getRight() != NULL) {//if right is not empty
+    print(current->getRight(), depth+1);//go to the end of the tree right bound
   }
-  int tab = depth;
-  for (tab; tab > 0; tab--) {
+  int tab = depth;//keep track of the depth
+  for (tab; tab > 0; tab--) {//print out the proper amount of tabs
     cout << "\t";
   }
-  cout << current->getValue() << endl;
-  if (current->getRight() != NULL) {
-    print(current->getRight(), depth+1);
+  cout << current->getValue() << endl;//print out the value
+  if (current->getLeft() != NULL) {//if the left is not empty
+    print(current->getLeft(), depth+1);//call the print passing in the left
   }
 }
