@@ -1,6 +1,7 @@
  /*Nicholas Rich
  *3/5/18
  *a program that creates a max heap from a user input or from a file and then prints it out
+ *(with help from Trevor Horine)
  */
 #include <iostream>
 #include <ctype.h>
@@ -146,21 +147,21 @@ void print(node* current, int depth) {
   }
 }
 
-void printFromTree(node* heap) {
-  while (heap[0]->getValue() != 0) {
-    int place = -1;
-    cout << heap[0] << " ";
-    for (int i = 0; i < 100; i++) {
-      if (heap[i]->getValue() == 0) {
-	place = i;
+void printFromTree(node* heap[]) {
+  while (heap[0]->getValue() != 0) {//go through the array as long as its not empty
+    int place = -1;//create place with a temp value
+    cout << heap[0]->getValue() << " ";//print out the head of the tree
+    for (int i = 0; i < 100; i++) {//go through the array
+      if (heap[i]->getValue() == 0) {//get the value the end of the array
+	place = i;//set place to the end of the list
 	break;
       }
     }
-    if (place == -1) {
-      place = 100;
+    if (place == -1) {//if you get to the end of the array and its full
+      place = 100;//set place to be the end of the array
     }
-    heap[0]->setValue(heap[place-1]->getValue());
-    heap[place-1]->setValue(0);
-    heapify(heap);
+    heap[0]->setValue(heap[place-1]->getValue());//set the value of the head to be equal to the value of the farthes right
+    heap[place-1]->setValue(0);//empty the farthest right node
+    heapify(1, heap);//heapify to sort the array
   }
 }
